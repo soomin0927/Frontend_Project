@@ -24,3 +24,16 @@ export const calculateBlockHeight = (
     ) * HOUR_HEIGHT;
 };
 
+
+// 블록 시작 위치 계산
+export const calculateBlockTop = (
+    startTime: string
+) => {
+    const start = timeToMinutes(startTime);
+    const baseTime = 8 * 60; // 08:00 기준
+
+    return(
+        (start - baseTime) / 60
+    ) * HOUR_HEIGHT;
+};
+
