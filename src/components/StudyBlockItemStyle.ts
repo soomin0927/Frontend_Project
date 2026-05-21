@@ -7,19 +7,22 @@ interface BlockProps {
 }
 
 export const Block = styled.div<BlockProps>`
+    width: 100%;
     top: ${({ $top }) => `${$top}px`};
     height: ${({ $height }) => `${$height}px`};
-    padding: 10px;
     position: absolute;
-    background-color: height: ${({ $color }) => $color};
+    background-color: ${({ $color }) => $color};
     color: white;
     cursor: pointer;
 `;
 
 export const Title = styled.div`
-    font-size: 16px;
+    padding-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
 `;
 
 export const Time = styled.div`
-    font-size: 14px;
+    padding-top: 5px;
+    font-size: 15px;
 `;

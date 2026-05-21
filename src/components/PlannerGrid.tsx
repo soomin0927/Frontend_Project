@@ -1,5 +1,10 @@
 // 시간표 전체 그리드
+import { mockCourses } from '../mock/courseMock';
+import { mockBlocks } from '../mock/plannerMock';
+import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import * as s from './PlannerGridStyle';
+import StudyBlockItem from './StudyBlockItem';
+
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -40,11 +45,41 @@ const PlannerGrid:React.FC = () => {
 
         {/* 요일 컬럼 */}
         <s.GridColumns>
-            {DAYS.map((day) => (
+            {DAYS.map((day, index) => (
                 <s.DayColumn key={day}>
+                
+                {/* 시간 */}
                 {HOURS.map((hour) => (
                     <s.GridCell key={hour} />
                 ))}
+
+                {/* 블록 렌더링 */}
+                {mockBlocks
+                      .filter(
+                          (block) =>
+                              block.dayOfWeek === index
+                      )
+                      .map((block) => {
+
+                          const course = mockCourses.find(
+                              (course) =>
+                                  course.id === block.courseId
+                          );
+
+                          return (
+                              <StudyBlockItem
+                                  key={block.id}
+                                  block={block}
+                                  title={course?.title ?? ''}
+                                  color={course?.color ?? '#999'}
+                                  top={calculateBlockTop(block.startTime)}
+                                  height={calculateBlockHeight(
+                                      block.startTime,
+                                      block.endTime
+                                  )}
+                              />
+                          );
+                      })}
                 </s.DayColumn>
             ))}
         </s.GridColumns>

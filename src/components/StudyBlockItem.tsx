@@ -1,6 +1,6 @@
 // 하나의 시간표 블록 UI
 import type { StudyBlock } from '../types/planner';
-import * as s from './StudyBlockStyle';
+import * as s from './StudyBlockItemStyle';
 
 
 interface StudyBlockProps {
@@ -12,7 +12,7 @@ interface StudyBlockProps {
     height: number;
 }
 
-const StudyBlock:React.FC<StudyBlockProps> = ({
+const StudyBlockItem:React.FC<StudyBlockProps> = ({
     block,
     title,
     color,
@@ -40,4 +40,4 @@ const StudyBlock:React.FC<StudyBlockProps> = ({
     )
 }
 
-export default StudyBlock;
+export default StudyBlockItem;
