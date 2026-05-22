@@ -14,15 +14,22 @@ export const Block = styled.div<BlockProps>`
     background-color: ${({ $color }) => $color};
     color: white;
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const Info = styled.div`
 `;
 
 export const Title = styled.div`
-    padding-top: 10px;
-    font-size: 18px;
+    // padding-top: 10px;
+    font-size: 16px;
     font-weight: bold;
 `;
 
 export const Time = styled.div`
     padding-top: 5px;
-    font-size: 15px;
+    font-size: 14px;
 `;

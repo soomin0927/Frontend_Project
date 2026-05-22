@@ -10,7 +10,7 @@ export const timeToMinutes = (
 
 
 // 블록 높이 계산 
-const HOUR_HEIGHT = 80; // 80px -> 지정해놓은 1시간 한칸의 높이 
+const HOUR_HEIGHT = 90; // 80px -> 지정해놓은 1시간 한칸의 높이 
 
 export const calculateBlockHeight = (
     startTime: string,

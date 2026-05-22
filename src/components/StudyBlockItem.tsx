@@ -10,6 +10,8 @@ interface StudyBlockProps {
     color: string;
     top: number;
     height: number;
+
+    onClick: () => void;
 }
 
 const StudyBlockItem:React.FC<StudyBlockProps> = ({
@@ -18,14 +20,17 @@ const StudyBlockItem:React.FC<StudyBlockProps> = ({
     color,
     top,
     height,
+    onClick,
 }) => {
 
     return (
-        <s.Block
+        <s.Block onClick={onClick}
             $top={top}
             $height={height}
             $color={color}
         >
+        
+        <s.Info>
             <s.Title>
                 {title}
             </s.Title>
@@ -35,6 +40,7 @@ const StudyBlockItem:React.FC<StudyBlockProps> = ({
                 ~
                 {block.endTime}
             </s.Time>
+        </s.Info> 
         
         </s.Block>
     )
