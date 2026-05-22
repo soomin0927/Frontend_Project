@@ -1,7 +1,9 @@
 // 시간표 전체 그리드
+import { useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
 import { mockBlocks } from '../mock/plannerMock';
 import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
+import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
 import StudyBlockItem from './StudyBlockItem';
 
@@ -16,77 +18,101 @@ const HOURS = Array.from(
 
 const PlannerGrid:React.FC = () => {
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
+
     <s.Container>
+      <s.TopBar>
+          
+          <s.AddBtn
+              onClick={() =>
+                  setIsModalOpen(true)
+              }
+          >
+              + 수업 추가
+          </s.AddBtn>
 
-      {/* 요일 헤더 */}
-      <s.HeaderRow>
+      </s.TopBar>
 
-        <s.TimeHeader />
-        {DAYS.map((day) => (
-          <s.DayHeader key={day}>
-            {day}
-          </s.DayHeader>
-        ))}
 
-      </s.HeaderRow>
 
-      {/* 시간표 영역 */}
-      <s.Body>
+        {/* 요일 헤더 */}
+        <s.HeaderRow>
 
-        {/* 시간 컬럼 */}
-        <s.TimeColumn>
-          {HOURS.map((hour) => (
-            <s.TimeCell key={hour}>
-              {String(hour).padStart(2, '0')}:00
-            </s.TimeCell>
+          <s.TimeHeader />
+          {DAYS.map((day) => (
+            <s.DayHeader key={day}>
+              {day}
+            </s.DayHeader>
           ))}
-        </s.TimeColumn>
 
-        {/* 요일 컬럼 */}
-        <s.GridColumns>
-            {DAYS.map((day, index) => (
-                <s.DayColumn key={day}>
-                
-                {/* 시간 */}
-                {HOURS.map((hour) => (
-                    <s.GridCell key={hour} />
-                ))}
+        </s.HeaderRow>
 
-                {/* 블록 렌더링 */}
-                {mockBlocks
-                      .filter(
-                          (block) =>
-                              block.dayOfWeek === index
-                      )
-                      .map((block) => {
+        {/* 시간표 영역 */}
+        <s.Body>
 
-                          const course = mockCourses.find(
-                              (course) =>
-                                  course.id === block.courseId
-                          );
-
-                          return (
-                              <StudyBlockItem
-                                  key={block.id}
-                                  block={block}
-                                  title={course?.title ?? ''}
-                                  color={course?.color ?? '#999'}
-                                  top={calculateBlockTop(block.startTime)}
-                                  height={calculateBlockHeight(
-                                      block.startTime,
-                                      block.endTime
-                                  )}
-                              />
-                          );
-                      })}
-                </s.DayColumn>
+          {/* 시간 컬럼 */}
+          <s.TimeColumn>
+            {HOURS.map((hour) => (
+              <s.TimeCell key={hour}>
+                {String(hour).padStart(2, '0')}:00
+              </s.TimeCell>
             ))}
-        </s.GridColumns>
+          </s.TimeColumn>
 
-      </s.Body>
+          {/* 요일 컬럼 */}
+          <s.GridColumns>
+              {DAYS.map((day, index) => (
+                  <s.DayColumn key={day}>
+                  
+                  {/* 시간 */}
+                  {HOURS.map((hour) => (
+                      <s.GridCell key={hour} />
+                  ))}
 
-    </s.Container>
+                  {/* 블록 렌더링 */}
+                  {mockBlocks
+                        .filter(
+                            (block) =>
+                                block.dayOfWeek === index
+                        )
+                        .map((block) => {
+
+                            const course = mockCourses.find(
+                                (course) =>
+                                    course.id === block.courseId
+                            );
+
+                            return (
+                                <StudyBlockItem
+                                    key={block.id}
+                                    block={block}
+                                    title={course?.title ?? ''}
+                                    color={course?.color ?? '#999'}
+                                    top={calculateBlockTop(block.startTime)}
+                                    height={calculateBlockHeight(
+                                        block.startTime,
+                                        block.endTime
+                                    )}
+                                />
+                            );
+                        })}
+                  </s.DayColumn>
+              ))}
+          </s.GridColumns>
+
+        </s.Body>
+
+
+      <DraftModal
+          isOpen={isModalOpen}
+          
+          onClose={() =>
+            setIsModalOpen(false)
+          }
+        />
+      </s.Container>
   );
 };
         
