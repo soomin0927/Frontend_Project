@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
 import { mockBlocks } from '../mock/plannerMock';
 import type { StudyBlock } from '../types/planner';
+import { hasTimeConflict } from '../utils/conflict';
 import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
@@ -19,14 +20,56 @@ const HOURS = Array.from(
 const PlannerGrid:React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [blocks, setBlocks] = useState<StudyBlock[]>(mockBlocks);
+  const [savedBlocks, setSavedBlocks] = useState<StudyBlock[]>(mockBlocks);
+  const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
+  const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
 
   const addBlock = (newBlock : StudyBlock) => {
-      setBlocks((prev) => [
+
+      const isConflict = hasTimeConflict(
+        newBlock, 
+        draftBlocks
+      )
+
+      if (isConflict) {
+        alert('시간이 겹치는 수업이 있어요!');
+        return false;
+      }
+
+      setDraftBlocks((prev) => [
           ...prev,
           newBlock
       ]);
+
+      return true;
   };
+
+  const updateBlock = (updatedBlock: StudyBlock) => {
+
+      const isConflict = hasTimeConflict(
+          updatedBlock,
+          draftBlocks.filter(
+              (block) => block.id !== updatedBlock.id
+          )
+      );
+
+      if (isConflict) {
+          alert('시간이 겹치는 수업이 있어요!');
+          return false;
+      }
+
+      setDraftBlocks((prev) =>
+          prev.map((block) =>
+              block.id === updatedBlock.id
+                  ? updatedBlock
+                  : block
+          )
+      );
+
+      return true;
+  };
+
+
 
   return (
 
@@ -34,9 +77,10 @@ const PlannerGrid:React.FC = () => {
       <s.TopBar>
           
           <s.AddBtn
-              onClick={() =>
-                  setIsModalOpen(true)
-              }
+              onClick={() => {
+                  setSelectedBlock(null);
+                  setIsModalOpen(true);
+              }}
           >
               + 수업 추가
           </s.AddBtn>
@@ -80,7 +124,7 @@ const PlannerGrid:React.FC = () => {
                   ))}
 
                   {/* 블록 렌더링 */}
-                  {blocks
+                  {draftBlocks
                         .filter(
                             (block) =>
                                 block.dayOfWeek === index
@@ -103,6 +147,10 @@ const PlannerGrid:React.FC = () => {
                                         block.startTime,
                                         block.endTime
                                     )}
+                                    onClick={() => {
+                                      setSelectedBlock(block);
+                                      setIsModalOpen(true);
+                                    }}
                                 />
                             );
                         })}
@@ -119,6 +167,8 @@ const PlannerGrid:React.FC = () => {
             setIsModalOpen(false)
           }
           onAddBlock={addBlock}
+          selectedBlock = {selectedBlock}
+          onUpdateBlock={updateBlock}
         />
       </s.Container>
   );

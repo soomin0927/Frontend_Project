@@ -1,13 +1,16 @@
 // 강의 추가 / 수정 모달
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
 import type { StudyBlock } from '../types/planner';
+import { timeToMinutes } from '../utils/time';
 import * as s from './DraftModalStyle';
 
 interface DraftModalProps {
     isOpen: boolean;
+    selectedBlock: StudyBlock | null;
     onClose: () => void;
-    onAddBlock: (block : StudyBlock) => void;
+    onAddBlock: (block : StudyBlock) => boolean;
+    onUpdateBlock: (block: StudyBlock) => boolean;
 }
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
@@ -20,39 +23,77 @@ const TIMES = Array.from(
 
 const DraftModal:React.FC<DraftModalProps> = ({
     isOpen,
+    selectedBlock,
     onClose,
     onAddBlock,
+    onUpdateBlock,
 }) => {
 
-    const [courseId, setCourseId] = useState(mockCourses[0].id);
-    const [dayOfWeek, setDayOfWeek] = useState(0);
-    const [startTime, setStartTime] = useState('09:00');
-    const [endTime, setEndTime] = useState('10:00');
-    const [memo, setMemo] = useState('');
+    const [courseId, setCourseId] = useState(selectedBlock?.courseId ?? mockCourses[0].id);
+    const [dayOfWeek, setDayOfWeek] = useState(selectedBlock?.dayOfWeek ?? 0);
+    const [startTime, setStartTime] = useState(selectedBlock?.startTime ?? '09:00');
+    const [endTime, setEndTime] = useState(selectedBlock?.endTime ?? '10:00');
+    const [memo, setMemo] = useState(selectedBlock?.memo ?? '');
+
+    useEffect(() => {
+        if (selectedBlock) {
+            setCourseId(selectedBlock.courseId);
+            setDayOfWeek(selectedBlock.dayOfWeek);
+            setStartTime(selectedBlock.startTime);
+            setEndTime(selectedBlock.endTime);
+            setMemo(selectedBlock.memo ?? '');
+        } else {
+            setCourseId(mockCourses[0].id);
+            setDayOfWeek(0);
+            setStartTime('09:00');
+            setEndTime('10:00');
+            setMemo('');
+        }
+
+    }, [selectedBlock]);
     
     const handleSubmit = () => {
 
-        onAddBlock({
-            id: crypto.randomUUID(),
-    
+        const start = timeToMinutes(startTime);
+        const end = timeToMinutes(endTime);
+
+        if (start >= end) {
+            alert('종료 시간이 시작 시간보다 빨라요!');
+            return;
+        }
+
+        const newBlock: StudyBlock = {
+            id: selectedBlock?.id ?? crypto.randomUUID(),
             courseId,
             dayOfWeek,
             startTime,
             endTime,
             memo,
-        });
+        };
 
-        onClose();
+        let isSuccess = false;
+
+        if (selectedBlock) {
+            onUpdateBlock(newBlock);
+            alert('수정되었습니다!');
+        } else {
+            onAddBlock(newBlock);
+            alert('추가되었습니다!');
+        }
+
+        if (isSuccess) {
+            onClose();
+        }
     };
-    
-    if (!isOpen) return null;
 
+    if (!isOpen) return null;
+    
     return (
          <s.ModalOverlay>
             <s.ModalContainer>
 
                 <s.Title>
-                    수업 추가
+                    {selectedBlock ? '수업 수정' : '수업 추가'}
                 </s.Title>
 
                 <s.Field>
@@ -173,7 +214,7 @@ const DraftModal:React.FC<DraftModalProps> = ({
 
                 <s.BtnGroup>
                     <s.CancelBtn onClick={onClose}> 취소 </s.CancelBtn>
-                    <s.ConfirmBtn onClick={handleSubmit}> 확인 </s.ConfirmBtn>
+                    <s.ConfirmBtn onClick={handleSubmit}> {selectedBlock ? '수정' : '추가'} </s.ConfirmBtn>
                 </s.BtnGroup>
 
 

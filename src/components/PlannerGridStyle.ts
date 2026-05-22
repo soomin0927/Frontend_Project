@@ -17,21 +17,23 @@ export const AddBtn = styled.button`
 
 export const Container = styled.div`
   width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
   border: 1px solid #aaa;
   background-color: #fff;
+  padding: 50px;
 `;
 
 export const HeaderRow = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   border-top: 1px solid #aaa;
-
 `;
 
 export const TimeHeader = styled.div`
   height: 50px;
+  border-left: 1px solid #aaa;
   border-right: 1px solid #aaa;
   border-bottom: 1px solid #aaa;
 `;
@@ -41,8 +43,10 @@ export const DayHeader = styled.div`
   border-bottom: 1px solid #aaa;
   border-right: 1px solid #aaa;
   display: flex;
-  justify-content: center;
+  font-size: 20px;
+  color: #555;
   font-weight: bold;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -55,12 +59,14 @@ export const TimeColumn = styled.div`
 `;
 
 export const TimeCell = styled.div`
-  height: 80px;
+  height: 90px;
   box-sizing: border-box;
+  border-left: 1px solid #aaa;
   border-bottom: 1px solid #aaa;
   border-right: 1px solid #aaa;
   padding-top: 8px;
-  font-size: 12px;
+  color: #555;
+  font-size: 16px;
   text-align: center;
 `;
 
@@ -71,7 +77,7 @@ export const GridColumns = styled.div`
 `;
 
 export const GridCell = styled.div`
-  height: 80px;
+  height: 90px;
   box-sizing: border-box;
   border-bottom: 1px solid #aaa;
 `;
