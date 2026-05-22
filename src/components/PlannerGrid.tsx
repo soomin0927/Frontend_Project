@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
 import { mockBlocks } from '../mock/plannerMock';
+import type { StudyBlock } from '../types/planner';
 import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
 import StudyBlockItem from './StudyBlockItem';
-
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -19,6 +19,14 @@ const HOURS = Array.from(
 const PlannerGrid:React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [blocks, setBlocks] = useState<StudyBlock[]>(mockBlocks);
+
+  const addBlock = (newBlock : StudyBlock) => {
+      setBlocks((prev) => [
+          ...prev,
+          newBlock
+      ]);
+  };
 
   return (
 
@@ -72,7 +80,7 @@ const PlannerGrid:React.FC = () => {
                   ))}
 
                   {/* 블록 렌더링 */}
-                  {mockBlocks
+                  {blocks
                         .filter(
                             (block) =>
                                 block.dayOfWeek === index
@@ -107,10 +115,10 @@ const PlannerGrid:React.FC = () => {
 
       <DraftModal
           isOpen={isModalOpen}
-          
           onClose={() =>
             setIsModalOpen(false)
           }
+          onAddBlock={addBlock}
         />
       </s.Container>
   );

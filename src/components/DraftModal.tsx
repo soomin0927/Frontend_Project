@@ -1,11 +1,13 @@
 // 강의 추가 / 수정 모달
 import { useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
+import type { StudyBlock } from '../types/planner';
 import * as s from './DraftModalStyle';
 
 interface DraftModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onAddBlock: (block : StudyBlock) => void;
 }
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
@@ -19,9 +21,8 @@ const TIMES = Array.from(
 const DraftModal:React.FC<DraftModalProps> = ({
     isOpen,
     onClose,
+    onAddBlock,
 }) => {
-
-    if (!isOpen) return null;
 
     const [courseId, setCourseId] = useState(mockCourses[0].id);
     const [dayOfWeek, setDayOfWeek] = useState(0);
@@ -31,7 +32,9 @@ const DraftModal:React.FC<DraftModalProps> = ({
     
     const handleSubmit = () => {
 
-        console.log({
+        onAddBlock({
+            id: crypto.randomUUID(),
+    
             courseId,
             dayOfWeek,
             startTime,
@@ -42,6 +45,7 @@ const DraftModal:React.FC<DraftModalProps> = ({
         onClose();
     };
     
+    if (!isOpen) return null;
 
     return (
          <s.ModalOverlay>
@@ -94,7 +98,7 @@ const DraftModal:React.FC<DraftModalProps> = ({
                             (day, index) => (
                                 <option
                                     key={day}
-                                    value={day}
+                                    value={index}
                                 >
                                     {day}
                                 </option>
