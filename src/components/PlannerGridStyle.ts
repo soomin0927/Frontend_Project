@@ -1,7 +1,24 @@
 import styled from "styled-components";
 
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+`;
+
+export const AddBtn = styled.button`
+  width: 150px;
+  height: 50px;
+  background-color: #4a4a4a;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+`;
+
 export const Container = styled.div`
   width: 100%;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #aaa;
   background-color: #fff;
 `;
@@ -9,6 +26,8 @@ export const Container = styled.div`
 export const HeaderRow = styled.div`
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
+  border-top: 1px solid #aaa;
+
 `;
 
 export const TimeHeader = styled.div`
