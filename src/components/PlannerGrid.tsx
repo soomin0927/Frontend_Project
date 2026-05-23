@@ -9,6 +9,7 @@ import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
 import StudyBlockItem from './StudyBlockItem';
+import WeeklySummary from './WeeklySummary';
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -113,7 +114,7 @@ const PlannerGrid:React.FC = () => {
 
       </s.TopBar>
 
-
+      <WeeklySummary blocks={draftBlocks}/> {/* 편집 중에도 실시간 반영 */}
 
         {/* 요일 헤더 */}
         <s.HeaderRow>
