@@ -4,9 +4,19 @@ export const TopBar = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 10px;
+  gap: 20px;
 `;
 
 export const AddBtn = styled.button`
+  width: 150px;
+  height: 50px;
+  background-color: #4a4a4a;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+`;
+
+export const SaveBtn = styled.button`
   width: 150px;
   height: 50px;
   background-color: #4a4a4a;

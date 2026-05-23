@@ -71,19 +71,18 @@ const DraftModal:React.FC<DraftModalProps> = ({
             memo,
         };
 
-        let isSuccess = false;
+        let success = false;
 
         if (selectedBlock) {
-            onUpdateBlock(newBlock);
+            success = onUpdateBlock(newBlock);
             alert('수정되었습니다!');
         } else {
-            onAddBlock(newBlock);
+            success = onAddBlock(newBlock);
             alert('추가되었습니다!');
         }
 
-        if (isSuccess) {
-            onClose();
-        }
+        if (success) onClose();
+
     };
 
     if (!isOpen) return null;

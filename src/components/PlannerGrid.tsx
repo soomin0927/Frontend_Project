@@ -1,9 +1,10 @@
 // 시간표 전체 그리드
 import { useState } from 'react';
 import { mockCourses } from '../mock/courseMock';
-import { mockBlocks } from '../mock/plannerMock';
-import type { StudyBlock } from '../types/planner';
-import { hasTimeConflict } from '../utils/conflict';
+// import { mockBlocks } from '../mock/plannerMock';
+// import type { StudyBlock } from '../types/planner';
+// import { hasTimeConflict } from '../utils/conflict';
+import { usePlanner } from '../hooks/usePlanner';
 import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
@@ -19,55 +20,65 @@ const HOURS = Array.from(
 
 const PlannerGrid:React.FC = () => {
 
+  const {
+      draftBlocks,
+      selectedBlock,
+      setSelectedBlock,
+      addBlock,
+      updateBlock,
+      deleteBlock,
+      saveBlocks,
+      isDirty
+  } = usePlanner();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [savedBlocks, setSavedBlocks] = useState<StudyBlock[]>(mockBlocks);
-  const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
-  const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
+  // const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
+  // const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
 
-  const addBlock = (newBlock : StudyBlock) => {
+  // const addBlock = (newBlock : StudyBlock) => {
 
-      const isConflict = hasTimeConflict(
-        newBlock, 
-        draftBlocks
-      )
+  //     const isConflict = hasTimeConflict(
+  //       newBlock, 
+  //       draftBlocks
+  //     )
 
-      if (isConflict) {
-        alert('시간이 겹치는 수업이 있어요!');
-        return false;
-      }
+  //     if (isConflict) {
+  //       alert('시간이 겹치는 수업이 있어요!');
+  //       return false;
+  //     }
 
-      setDraftBlocks((prev) => [
-          ...prev,
-          newBlock
-      ]);
+  //     setDraftBlocks((prev) => [
+  //         ...prev,
+  //         newBlock
+  //     ]);
 
-      return true;
-  };
+  //     return true;
+  // };
 
-  const updateBlock = (updatedBlock: StudyBlock) => {
+  // const updateBlock = (updatedBlock: StudyBlock) => {
 
-      const isConflict = hasTimeConflict(
-          updatedBlock,
-          draftBlocks.filter(
-              (block) => block.id !== updatedBlock.id
-          )
-      );
+  //     const isConflict = hasTimeConflict(
+  //         updatedBlock,
+  //         draftBlocks.filter(
+  //             (block) => block.id !== updatedBlock.id
+  //         )
+  //     );
 
-      if (isConflict) {
-          alert('시간이 겹치는 수업이 있어요!');
-          return false;
-      }
+  //     if (isConflict) {
+  //         alert('시간이 겹치는 수업이 있어요!');
+  //         return false;
+  //     }
 
-      setDraftBlocks((prev) =>
-          prev.map((block) =>
-              block.id === updatedBlock.id
-                  ? updatedBlock
-                  : block
-          )
-      );
+  //     setDraftBlocks((prev) =>
+  //         prev.map((block) =>
+  //             block.id === updatedBlock.id
+  //                 ? updatedBlock
+  //                 : block
+  //         )
+  //     );
 
-      return true;
-  };
+  //     return true;
+  // };
 
 
 
@@ -75,6 +86,19 @@ const PlannerGrid:React.FC = () => {
 
     <s.Container>
       <s.TopBar>
+
+          <s.SaveBtn disabled={!isDirty} onClick={async () =>{
+              const success = await saveBlocks();
+
+              if(success) {
+                alert('저장 완료!');
+              } else {
+                alert('충돌이 있어 저장할 수 없어요!');
+              }
+
+          }}>
+            저장
+          </s.SaveBtn>
           
           <s.AddBtn
               onClick={() => {
@@ -84,6 +108,8 @@ const PlannerGrid:React.FC = () => {
           >
               + 수업 추가
           </s.AddBtn>
+
+
 
       </s.TopBar>
 
