@@ -31,6 +31,7 @@ const PlannerGrid:React.FC = () => {
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isEmpty = draftBlocks.length === 0;
 
   return (
 
@@ -132,10 +133,23 @@ const PlannerGrid:React.FC = () => {
                         })}
                   </s.DayColumn>
               ))}
-          </s.GridColumns>
+
+              {isEmpty && (
+                    <s.EmptyOverlay>
+
+                        <s.EmptyTitle>
+                            아직 등록된 수업이 없어요!
+                        </s.EmptyTitle>
+
+                        <s.EmptyText>
+                            + 수업 추가 버튼으로 학습 계획을 만들어보세요!
+                        </s.EmptyText>
+
+                    </s.EmptyOverlay>
+                )}
+              </s.GridColumns>
 
         </s.Body>
-
 
       <DraftModal
           isOpen={isModalOpen}
