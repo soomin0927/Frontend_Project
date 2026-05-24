@@ -40,12 +40,32 @@ const PlannerGrid:React.FC = () => {
       isSaving,
       currentWeekStart,
       setCurrentWeekStart,
+      isLoading,
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isEmpty = draftBlocks.length === 0;
 
-  const moveWeek = (diff: number) => {
+  const moveWeek = async(diff: number) => {
+
+    // 저장 안 된 변경사항 있음
+    if (isDirty) {
+
+        const shouldSave = window.confirm(
+            '저장되지 않은 변경사항이 있어요.\n저장 후 이동하시겠어요?'
+        );
+
+        // 취소 누름
+        if (!shouldSave) return;
+
+        const success = await saveBlocks();
+
+        if (!success) {
+
+            alert('저장에 실패했어요!');
+            return;
+        }
+    }
 
       const nextWeek = new Date(currentWeekStart);
 
@@ -191,7 +211,7 @@ const PlannerGrid:React.FC = () => {
                   </s.DayColumn>
               ))}
 
-              {isEmpty && (
+              {!isLoading && isEmpty && (
                     <s.EmptyOverlay>
 
                         <s.EmptyTitle>
