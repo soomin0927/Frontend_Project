@@ -30,38 +30,38 @@ http://localhost:5173
 
 ## 프로젝트 구조 설명
 src/
- ├── components/        # UI 컴포넌트 / styled-componets
- │    ├── PlannerGrid.tsx
- │    ├── PlannerGridStyle.ts
- │    ├── DraftModal.tsx
- │    ├── DraftModalStyle.ts
- │    ├── StudyBlockItem.tsx
- │    ├── StudyBlockItemStyle.ts
- │    └── WeeklySummary.tsx
- │    └── WeeklySummaryStyle.ts
- │
- ├── hooks/             # 커스텀 훅
- │    └── usePlanner.ts
- │
- ├── mock/              # Mock 데이터
- │    ├── plannerMock.ts
- │    └── courseMock.ts
- │
- ├── pages/             # 페이지
- │    └── PlannerPage.tsx
- │
- ├── services/          # API 레이어(mock)
- │    └── plannerApi
- │
- ├── types/             # 타입 정의
- │    └── api
- │    └── course
- │    └── planner
- │
- └── utils/             # 시간 계산 및 충돌 검사
-     ├── time
-     └── conflict
-     └── summary
+├── components/                # UI 컴포넌트 및 styled-components
+│   ├── PlannerGrid.tsx
+│   ├── PlannerGridStyle.ts
+│   ├── DraftModal.tsx
+│   ├── DraftModalStyle.ts
+│   ├── StudyBlockItem.tsx
+│   ├── StudyBlockItemStyle.ts
+│   ├── WeeklySummary.tsx
+│   └── WeeklySummaryStyle.ts
+│
+├── hooks/                     # 커스텀 훅
+│   └── usePlanner.ts
+│
+├── mock/                      # Mock 데이터
+│   ├── plannerMock.ts
+│   └── courseMock.ts
+│
+├── pages/                     # 페이지 컴포넌트
+│   └── PlannerPage.tsx
+│
+├── services/                  # API 레이어 (mock/localStorage 기반)
+│   └── plannerApi.ts
+│
+├── types/                     # TypeScript 타입 정의
+│   ├── api.ts
+│   ├── course.ts
+│   └── planner.ts
+│
+└── utils/                     # 공통 유틸 함수
+    ├── time.ts                # 시간 계산 관련
+    ├── conflict.ts            # 시간 충돌 검사
+    └── summary.ts             # 주간 통계 계산
  
         
 
