@@ -33,55 +33,6 @@ const PlannerGrid:React.FC = () => {
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
-  // const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
-
-  // const addBlock = (newBlock : StudyBlock) => {
-
-  //     const isConflict = hasTimeConflict(
-  //       newBlock, 
-  //       draftBlocks
-  //     )
-
-  //     if (isConflict) {
-  //       alert('시간이 겹치는 수업이 있어요!');
-  //       return false;
-  //     }
-
-  //     setDraftBlocks((prev) => [
-  //         ...prev,
-  //         newBlock
-  //     ]);
-
-  //     return true;
-  // };
-
-  // const updateBlock = (updatedBlock: StudyBlock) => {
-
-  //     const isConflict = hasTimeConflict(
-  //         updatedBlock,
-  //         draftBlocks.filter(
-  //             (block) => block.id !== updatedBlock.id
-  //         )
-  //     );
-
-  //     if (isConflict) {
-  //         alert('시간이 겹치는 수업이 있어요!');
-  //         return false;
-  //     }
-
-  //     setDraftBlocks((prev) =>
-  //         prev.map((block) =>
-  //             block.id === updatedBlock.id
-  //                 ? updatedBlock
-  //                 : block
-  //         )
-  //     );
-
-  //     return true;
-  // };
-
-
 
   return (
 
@@ -196,6 +147,7 @@ const PlannerGrid:React.FC = () => {
           onAddBlock={addBlock}
           selectedBlock = {selectedBlock}
           onUpdateBlock={updateBlock}
+          onDeleteBlock={deleteBlock}
         />
       </s.Container>
   );

@@ -11,6 +11,7 @@ interface DraftModalProps {
     onClose: () => void;
     onAddBlock: (block : StudyBlock) => boolean;
     onUpdateBlock: (block: StudyBlock) => boolean;
+    onDeleteBlock: (id: string) => void;
 }
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
@@ -27,6 +28,7 @@ const DraftModal:React.FC<DraftModalProps> = ({
     onClose,
     onAddBlock,
     onUpdateBlock,
+    onDeleteBlock,
 }) => {
 
     const [courseId, setCourseId] = useState(selectedBlock?.courseId ?? mockCourses[0].id);
@@ -85,15 +87,40 @@ const DraftModal:React.FC<DraftModalProps> = ({
 
     };
 
+    const handleDelete = () => {
+
+        if (!selectedBlock) return;
+
+        const isConfirm = window.confirm('수업을 삭제하시겠어요?');
+
+        if (!isConfirm) return;
+
+        onDeleteBlock(selectedBlock.id);
+
+        alert('삭제되었습니다!');
+
+        onClose();
+    }
+
     if (!isOpen) return null;
     
     return (
          <s.ModalOverlay>
             <s.ModalContainer>
 
-                <s.Title>
-                    {selectedBlock ? '수업 수정' : '수업 추가'}
-                </s.Title>
+
+                <s.TopBar>
+                    {selectedBlock && (
+                            <s.DeleteBtn onClick={handleDelete}>
+                                삭제
+                            </s.DeleteBtn>
+                        )}
+
+                    <s.Title>
+                        {selectedBlock ? '수업 수정' : '수업 추가'}
+                    </s.Title>
+
+                </s.TopBar>
 
                 <s.Field>
                     {/* 1. 강의선택 */}
@@ -212,6 +239,12 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.BtnGroup>
+                    {/* {selectedBlock && (
+                        <s.DeleteBtn onClick={handleDelete}>
+                            삭제
+                        </s.DeleteBtn>
+                    )} */}
+
                     <s.CancelBtn onClick={onClose}> 취소 </s.CancelBtn>
                     <s.ConfirmBtn onClick={handleSubmit}> {selectedBlock ? '수정' : '추가'} </s.ConfirmBtn>
                 </s.BtnGroup>
