@@ -77,10 +77,20 @@ const DraftModal:React.FC<DraftModalProps> = ({
 
         if (selectedBlock) {
             success = onUpdateBlock(newBlock);
-            alert('수정되었습니다!');
+
+            if (success) {
+                alert('수정되었습니다!');
+            } else {
+                alert('시간이 겹치는 수업이 있어요!');
+            }
         } else {
             success = onAddBlock(newBlock);
-            alert('추가되었습니다!');
+
+            if (success) {
+                alert('추가되었습니다!');
+            } else {
+                alert('시간이 겹치는 수업이 있어요!');
+            }
         }
 
         if (success) onClose();
@@ -123,7 +133,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.TopBar>
 
                 <s.Field>
-                    {/* 1. 강의선택 */}
                     <s.Label> 강의선택 </s.Label>
 
                     <s.Select 
@@ -149,7 +158,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.Field>
-                    {/* 2. 요일선택 */}
                     <s.Label> 요일선택 </s.Label>
 
                     <s.Select 
@@ -176,7 +184,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.Field>
-                    {/* 3. 시작시간*/}
                     <s.Label> 시작시간  </s.Label>
 
                     <s.Select 
@@ -201,7 +208,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.Field>
-                    {/* 4. 종료시간 */}
                     <s.Label> 종료시간  </s.Label>
 
                     <s.Select 
@@ -226,7 +232,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.Field>
-                    {/* 5. 메모 */}
                     <s.Label> 메모 </s.Label>
 
                     <s.TextArea
@@ -239,12 +244,6 @@ const DraftModal:React.FC<DraftModalProps> = ({
                 </s.Field>
 
                 <s.BtnGroup>
-                    {/* {selectedBlock && (
-                        <s.DeleteBtn onClick={handleDelete}>
-                            삭제
-                        </s.DeleteBtn>
-                    )} */}
-
                     <s.CancelBtn onClick={onClose}> 취소 </s.CancelBtn>
                     <s.ConfirmBtn onClick={handleSubmit}> {selectedBlock ? '수정' : '추가'} </s.ConfirmBtn>
                 </s.BtnGroup>
