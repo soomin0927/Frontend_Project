@@ -12,6 +12,10 @@ interface DraftModalProps {
     onAddBlock: (block : StudyBlock) => boolean;
     onUpdateBlock: (block: StudyBlock) => boolean;
     onDeleteBlock: (id: string) => void;
+    clickedSlot: {
+        dayOfWeek: number;
+        startTime: string;
+    } | null;
 }
 
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
@@ -39,6 +43,7 @@ const DraftModal:React.FC<DraftModalProps> = ({
     onAddBlock,
     onUpdateBlock,
     onDeleteBlock,
+    clickedSlot,
 }) => {
 
     const [courseId, setCourseId] = useState(selectedBlock?.courseId ?? mockCourses[0].id);
@@ -55,14 +60,18 @@ const DraftModal:React.FC<DraftModalProps> = ({
             setEndTime(selectedBlock.endTime);
             setMemo(selectedBlock.memo ?? '');
         } else {
+            const startIndex = TIMES.indexOf(
+                clickedSlot?.startTime ?? '09:00'
+            )
+
             setCourseId(mockCourses[0].id);
-            setDayOfWeek(0);
-            setStartTime('09:00');
-            setEndTime('10:00');
+            setDayOfWeek(clickedSlot?.dayOfWeek ?? 0);
+            setStartTime(clickedSlot?.startTime ?? '09:00');
+            setEndTime(TIMES[startIndex + 2] ?? '10:00');
             setMemo('');
         }
 
-    }, [selectedBlock]);
+    }, [selectedBlock, clickedSlot]);
     
     const handleSubmit = () => {
 

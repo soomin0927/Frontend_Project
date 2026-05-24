@@ -44,7 +44,12 @@ const PlannerGrid:React.FC = () => {
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clickedSlot, setClickedSlot] = useState<{
+      dayOfWeek: number;
+      startTime: string;
+  } | null>(null);
   const isEmpty = draftBlocks.length === 0;
+  
 
   const moveWeek = async(diff: number) => {
 
@@ -161,7 +166,6 @@ const PlannerGrid:React.FC = () => {
           <s.TimeColumn>
             {HOURS.map((hour) => (
               <s.TimeCell key={hour}>
-                {/* {String(hour).padStart(2, '0')}:00 */}
                 {hour}
               </s.TimeCell>
             ))}
@@ -174,7 +178,20 @@ const PlannerGrid:React.FC = () => {
                   
                   {/* 시간 */}
                   {HOURS.map((hour) => (
-                      <s.GridCell key={hour} />
+                      <s.GridCell
+                          key={hour}
+                          onClick={() => {
+
+                              setSelectedBlock(null);
+
+                              setClickedSlot({
+                                  dayOfWeek: index,
+                                  startTime: hour,
+                              });
+
+                              setIsModalOpen(true);
+                          }}
+                      />
                   ))}
 
                   {/* 블록 렌더링 */}
@@ -237,6 +254,7 @@ const PlannerGrid:React.FC = () => {
           selectedBlock = {selectedBlock}
           onUpdateBlock={updateBlock}
           onDeleteBlock={deleteBlock}
+          clickedSlot={clickedSlot}
         />
       </s.Container>
   );
