@@ -29,6 +29,7 @@ npm run dev
 http://localhost:5173
 
 ## 프로젝트 구조 설명
+```txt
 src/
 ├── components/                # UI 컴포넌트 및 styled-components
 │   ├── PlannerGrid.tsx
@@ -62,8 +63,7 @@ src/
     ├── time.ts                # 시간 계산 관련
     ├── conflict.ts            # 시간 충돌 검사
     └── summary.ts             # 주간 통계 계산
- 
-        
+```
 
 ## 요구사항 해석 및 가정
 ### 시간표 단위
