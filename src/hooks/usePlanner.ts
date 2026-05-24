@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockBlocks } from "../mock/plannerMock";
 import type { StudyBlock } from "../types/planner";
 import { hasTimeConflict } from "../utils/conflict";
@@ -89,6 +89,34 @@ export const usePlanner = () => {
     const isDirty =
         JSON.stringify(serverBlocks) !== JSON.stringify(draftBlocks);
 
+    useEffect(() => {
+
+        const handleBeforeUnload = (
+            event: BeforeUnloadEvent
+        ) => {
+
+            if (!isDirty) return;
+
+            event.preventDefault();
+
+            event.returnValue = '';
+        };
+
+        window.addEventListener(
+            'beforeunload',
+            handleBeforeUnload
+        );
+
+        return () => {
+
+            window.removeEventListener(
+                'beforeunload',
+                handleBeforeUnload
+            );
+        };
+
+    }, [isDirty]);
+
     return {
         serverBlocks,
         draftBlocks,
@@ -103,4 +131,6 @@ export const usePlanner = () => {
         isDirty,
         isSaving
     };
+
+    
 };
