@@ -8,6 +8,7 @@ export const usePlanner = () => {
     const [serverBlocks, setServerBlocks] = useState<StudyBlock[]>(mockBlocks);
     const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
     const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // 충돌 체크
     const checkConflict = (target: StudyBlock, list: StudyBlock[]) => {
@@ -56,15 +57,32 @@ export const usePlanner = () => {
             return false;
         }
 
-        const response = {
-            weekStart: "2026-05-22",
-            blocks: draftBlocks
-        };
+        try {
 
-        // 서버 상태 동기화
-        setServerBlocks(response.blocks);
+            setIsSaving(true);
 
-        return true;
+            // mock API 요청 느낌
+            await new Promise(resolve =>
+                setTimeout(resolve, 1500)
+            );
+
+            const response = {
+                weekStart: "2026-05-22",
+                blocks: draftBlocks
+            };
+
+            setServerBlocks(response.blocks);
+
+            return true;
+
+        } catch (error) {
+
+            return false;
+
+        } finally {
+
+            setIsSaving(false);
+        }
     };
 
     // dirty 상태
@@ -82,6 +100,7 @@ export const usePlanner = () => {
         deleteBlock,
         saveBlocks,
 
-        isDirty
+        isDirty,
+        isSaving
     };
 };

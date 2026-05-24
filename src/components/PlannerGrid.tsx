@@ -1,10 +1,7 @@
 // 시간표 전체 그리드
 import { useState } from 'react';
-import { mockCourses } from '../mock/courseMock';
-// import { mockBlocks } from '../mock/plannerMock';
-// import type { StudyBlock } from '../types/planner';
-// import { hasTimeConflict } from '../utils/conflict';
 import { usePlanner } from '../hooks/usePlanner';
+import { mockCourses } from '../mock/courseMock';
 import { calculateBlockHeight, calculateBlockTop } from '../utils/time';
 import DraftModal from './DraftModal';
 import * as s from './PlannerGridStyle';
@@ -29,7 +26,8 @@ const PlannerGrid:React.FC = () => {
       updateBlock,
       deleteBlock,
       saveBlocks,
-      isDirty
+      isDirty,
+      isSaving,
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +37,7 @@ const PlannerGrid:React.FC = () => {
     <s.Container>
       <s.TopBar>
 
-          <s.SaveBtn disabled={!isDirty} onClick={async () =>{
+          <s.SaveBtn disabled={!isDirty || isSaving} onClick={async () =>{
               const success = await saveBlocks();
 
               if(success) {
@@ -49,7 +47,7 @@ const PlannerGrid:React.FC = () => {
               }
 
           }}>
-            저장
+            {isSaving ? '저장 중...' : '저장'}
           </s.SaveBtn>
           
           <s.AddBtn
