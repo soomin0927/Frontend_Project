@@ -18,6 +18,7 @@
 
 ### State / Data
 - React Hooks (`useState`, `useEffect`)
+- Custom Hook (`usePlanner`)
 - LocalStorage
 - Mock API Layer
 
@@ -120,6 +121,24 @@ src/
 이를 통해
 - 저장 버튼 활성화 제어
 - 저장되지 않은 변경사항 경고
+- 저장 전 이동 방지
+
+### 4. 사용자 경험 개선
+빈 시간 슬롯 클릭 시 자동으로 시작 시간이 설정되도록 구현하여 빠르게 수업을 추가할 수 있도록 개선했습니다.
+
+---
+
+## Mock 데이터 / 서버 구성 방법
+
+`services/plannerApi.ts`
+
+- `fetchPlannerBlocks`
+  - localStorage 데이터를 조회합니다.
+  - 비동기 지연(setTimeout)을 통해 실제 API 요청처럼 동작합니다.
+
+- `savePlannerBlocks`
+  - 시간표 데이터를 localStorage 에 저장합니다.
+  - 저장 로딩 상태를 구현했습니다.
 
 ---
 
