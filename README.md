@@ -21,12 +21,15 @@
 ### 1. 프로젝트 설치
 --- bash
 npm install
+---
 ### 2. 개발 서버 실행
 --- bash
 npm run dev
+---
 ### 3. 접속
 --- bash
 http://localhost:5173
+---
 
 ## 프로젝트 구조 설명
 ```txt
