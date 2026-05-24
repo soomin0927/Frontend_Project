@@ -139,5 +139,6 @@ src/
 - TypeScript 타입 설계
 - 시간 계산 로직 구현
 - LocalStorage 기반 MOCK API 구조 설계
+
 에서 기능 요구사항에 맞게 수정 및 재구성하여 구현을 진행했습니다.
 
