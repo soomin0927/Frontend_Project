@@ -5,8 +5,14 @@ import { hasTimeConflict } from "../utils/conflict";
 
 export const usePlanner = () => {
 
-    const [serverBlocks, setServerBlocks] = useState<StudyBlock[]>(mockBlocks);
-    const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(mockBlocks);
+    const STORAGE_KEY = 'planner_blocks';
+
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    const initialBlocks = savedData
+            ? JSON.parse(savedData)
+            : mockBlocks; 
+    const [serverBlocks, setServerBlocks] = useState<StudyBlock[]>(initialBlocks);
+    const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(initialBlocks);
     const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -72,6 +78,11 @@ export const usePlanner = () => {
             };
 
             setServerBlocks(response.blocks);
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(response.blocks)
+            );
 
             return true;
 
