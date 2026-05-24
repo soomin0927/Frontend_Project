@@ -23,10 +23,9 @@ export const ModalContainer = styled.div`
 
 export const Title = styled.div`
     text-align: center;
-    font-size: 23px;
+    font-size: 25px;
     font-weight: bold;
     color: #232323;
-    margin: 20px 0;
 `; 
 
 export const Field = styled.div`
@@ -79,4 +78,27 @@ export const ConfirmBtn = styled.button`
     border-radius: 5px;
     font-size: 15px;
     background-color: #008a10;
+`;
+
+export const TopBar = styled.div`
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 30px 0;
+    align-items: center;
+`;
+
+export const DeleteBtn = styled.button`
+    width: 80px;
+    height: 35px;
+    padding: 5px 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #d63434;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #d63434;
+    background-color: #fff;
 `;
