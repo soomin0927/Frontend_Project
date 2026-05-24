@@ -15,7 +15,7 @@
 - Vite
 
 ### State / Data
-- React Hooks ('useState', 'useEffect')
+- React Hooks (`useState`, `useEffect`)
 - LocalStorage
 - Mock API Layer
 
@@ -106,14 +106,14 @@ src/
 - 로딩 상태 관리
 
 ### 2. API Layer 분리
-초기에는 LocalStorage를 컴포넌트 내부에서 직접 사용했지만, 이후 'service/plannerApi.ts'로 분리했습니다.
+초기에는 LocalStorage를 컴포넌트 내부에서 직접 사용했지만, 이후 `service/plannerApi.ts`로 분리했습니다.
 
 이를 통해 
 - 실제 API 전환이 쉬워지고
 - 데이터 접근 책임을 분리할 수 있었습니다.
 
 ### 3. Draft / Server 상태 분리
-편집 중 상태('draftBlocks')와 저장 완료 상태('serverBlocks'를 분리하여 저장 여부(isDirty)를 판단할 수 있도록 설계했습니다.
+편집 중 상태(`draftBlocks`)와 저장 완료 상태(`serverBlocks`를 분리하여 저장 여부(isDirty)를 판단할 수 있도록 설계했습니다.
 
 이를 통해
 - 저장 버튼 활성화 제어
