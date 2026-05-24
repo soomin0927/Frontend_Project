@@ -18,4 +18,20 @@ export const mockCourses: Course[] = [
         title: 'Computer Science',
         color: '#2b27fb',
     },
+    {
+        id: 'java',
+        title: 'Computer Science',
+        color: '#ff9100',
+    },
+    {
+        id: 'sql',
+        title: 'Computer Science',
+        color: '#ff00ff',
+    },
+    {
+        id: 'python',
+        title: 'Computer Science',
+        color: '#7400cc',
+    },
+
 ];
