@@ -25,18 +25,26 @@
 ---
 
 ## 실행 방법
-### 1. 프로젝트 설치
+
+### 1. 프로젝트 폴더 이동
 ```bash
-npm install
+cd Frontend_Project
 ```
 
-### 2. 개발 서버 실행
+### 2. 패키지 설치
+```bash
+npm install
+npm install react-router-dom
+npm install -D @types/styled-components
+```
+
+### 3. 개발 서버 실행
 
 ```bash
 npm run dev
 ```
 
-### 3. 접속
+### 4. 접속
 
 ```bash
 http://localhost:5173
