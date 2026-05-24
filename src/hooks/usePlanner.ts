@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { mockBlocks } from "../mock/plannerMock";
+import { fetchPlannerBlocks, savePlannerBlocks } from "../services/plannerApi";
 import type { StudyBlock } from "../types/planner";
 import { hasTimeConflict } from "../utils/conflict";
 
@@ -20,19 +20,21 @@ const getWeekStart = (date: Date) => {
     return current;
 };
 
+const formatDateKey = (
+    date: Date
+) => {
+
+    return date.toISOString().split('T')[0];
+};
+
 export const usePlanner = () => {
 
-    const STORAGE_KEY = 'planner_blocks';
-
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    const initialBlocks = savedData
-            ? JSON.parse(savedData)
-            : mockBlocks; 
-    const [serverBlocks, setServerBlocks] = useState<StudyBlock[]>(initialBlocks);
-    const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(initialBlocks);
+    const [serverBlocks, setServerBlocks] = useState<StudyBlock[]>([]);
+    const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>([]);
     const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
     const [isSaving, setIsSaving] = useState(false);
     const [currentWeekStart, setCurrentWeekStart] = useState<Date>(getWeekStart(new Date()));
+    const [isLoading, setIsLoading] = useState(true);
 
     // 충돌 체크
     const checkConflict = (target: StudyBlock, list: StudyBlock[]) => {
@@ -85,22 +87,12 @@ export const usePlanner = () => {
 
             setIsSaving(true);
 
-            // mock API 요청 느낌
-            await new Promise(resolve =>
-                setTimeout(resolve, 1500)
+            await savePlannerBlocks(
+                formatDateKey(currentWeekStart),
+                draftBlocks
             );
 
-            const response = {
-                weekStart: "2026-05-22",
-                blocks: draftBlocks
-            };
-
-            setServerBlocks(response.blocks);
-
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(response.blocks)
-            );
+            setServerBlocks(draftBlocks);
 
             return true;
 
@@ -120,31 +112,25 @@ export const usePlanner = () => {
 
     useEffect(() => {
 
-        const handleBeforeUnload = (
-            event: BeforeUnloadEvent
-        ) => {
+        const loadBlocks = async () => {
 
-            if (!isDirty) return;
+            try {
 
-            event.preventDefault();
+                const response =
+                    await fetchPlannerBlocks(formatDateKey(currentWeekStart));
 
-            event.returnValue = '';
+                setServerBlocks(response.blocks);
+                setDraftBlocks(response.blocks);
+
+            } finally {
+
+                setIsLoading(false);
+            }
         };
 
-        window.addEventListener(
-            'beforeunload',
-            handleBeforeUnload
-        );
+        loadBlocks();
 
-        return () => {
-
-            window.removeEventListener(
-                'beforeunload',
-                handleBeforeUnload
-            );
-        };
-
-    }, [isDirty]);
+    }, [currentWeekStart]);
 
     return {
         serverBlocks,
@@ -162,6 +148,7 @@ export const usePlanner = () => {
         
         currentWeekStart,
         setCurrentWeekStart,
+        isLoading,
     };
 
     
