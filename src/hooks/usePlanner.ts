@@ -3,6 +3,23 @@ import { mockBlocks } from "../mock/plannerMock";
 import type { StudyBlock } from "../types/planner";
 import { hasTimeConflict } from "../utils/conflict";
 
+const getWeekStart = (date: Date) => {
+
+    const current = new Date(date);
+
+    const day = current.getDay();
+
+    // 일요일(0)
+    const diff =
+        day === 0
+            ? -6
+            : 1 - day;
+
+    current.setDate(current.getDate() + diff);
+
+    return current;
+};
+
 export const usePlanner = () => {
 
     const STORAGE_KEY = 'planner_blocks';
@@ -15,6 +32,7 @@ export const usePlanner = () => {
     const [draftBlocks, setDraftBlocks] = useState<StudyBlock[]>(initialBlocks);
     const [selectedBlock, setSelectedBlock] = useState<StudyBlock | null>(null);
     const [isSaving, setIsSaving] = useState(false);
+    const [currentWeekStart, setCurrentWeekStart] = useState<Date>(getWeekStart(new Date()));
 
     // 충돌 체크
     const checkConflict = (target: StudyBlock, list: StudyBlock[]) => {
@@ -140,7 +158,10 @@ export const usePlanner = () => {
         saveBlocks,
 
         isDirty,
-        isSaving
+        isSaving,
+        
+        currentWeekStart,
+        setCurrentWeekStart,
     };
 
     

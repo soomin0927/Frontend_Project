@@ -100,19 +100,15 @@ export const DayColumn = styled.div`
 
 export const EmptyOverlay = styled.div`
     position: absolute;
-
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     background: #555555b9;
-
     z-index: 10;
 `;
 
@@ -126,4 +122,30 @@ export const EmptyTitle = styled.h3`
 export const EmptyText = styled.p`
     font-size: 22px;
     color: #fff;
+`;
+
+
+
+export const WeekNavigator = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+`;
+
+export const MoveBtn = styled.button`
+    width: 40px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    background: #4a4a4a;
+    color: white;
+    cursor: pointer;
+`;
+
+export const WeekText = styled.div`
+    font-size: 20px;
+    font-weight: 700;
+    color: #555;
 `;

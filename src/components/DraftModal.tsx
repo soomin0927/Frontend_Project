@@ -17,9 +17,19 @@ interface DraftModalProps {
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
 const TIMES = Array.from(
-    { length: 13 },
-    (_, index) =>
-        `${String(index + 8).padStart(2, '0')}:00`
+    { length: 25 },
+    (_, index) => {
+
+        const hour =
+            Math.floor(index / 2) + 8;
+
+        const minute =
+            index % 2 === 0
+                ? '00'
+                : '30';
+
+        return `${String(hour).padStart(2, '0')}:${minute}`;
+    }
 );
 
 const DraftModal:React.FC<DraftModalProps> = ({
