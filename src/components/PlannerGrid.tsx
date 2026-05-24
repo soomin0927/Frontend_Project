@@ -11,9 +11,19 @@ import WeeklySummary from './WeeklySummary';
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'];
 
 const HOURS = Array.from(
-  { length: 13 },
-  (_, index) => index + 8 
-  // 과제 조건 : 08:00 ~ 20:00 이라서 index는 0부터 시작하니까 + 8씩 하면 20시까지 구현 가능
+    { length: 25 },
+    (_, index) => {
+
+        const hour =
+            Math.floor(index / 2) + 8;
+
+        const minute =
+            index % 2 === 0
+                ? '00'
+                : '30';
+
+        return `${String(hour).padStart(2, '0')}:${minute}`;
+    }
 );
 
 const PlannerGrid:React.FC = () => {
@@ -28,14 +38,40 @@ const PlannerGrid:React.FC = () => {
       saveBlocks,
       isDirty,
       isSaving,
+      currentWeekStart,
+      setCurrentWeekStart,
   } = usePlanner();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isEmpty = draftBlocks.length === 0;
 
+  const moveWeek = (diff: number) => {
+
+      const nextWeek = new Date(currentWeekStart);
+
+      nextWeek.setDate(
+          nextWeek.getDate() + diff * 7
+      );
+
+      setCurrentWeekStart(nextWeek);
+  };
+
+  const formatWeek = () => {
+
+      return currentWeekStart.toLocaleDateString(
+          'ko-KR',
+          {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+          }
+      );
+  };
+
   return (
 
     <s.Container>
+      
       <s.TopBar>
 
           <s.SaveBtn disabled={!isDirty || isSaving} onClick={async () =>{
@@ -64,6 +100,26 @@ const PlannerGrid:React.FC = () => {
 
       </s.TopBar>
 
+      <s.WeekNavigator>
+
+            <s.MoveBtn
+                onClick={() => moveWeek(-1)}
+            >
+                ←
+            </s.MoveBtn>
+
+            <s.WeekText>
+                {formatWeek()} 주
+            </s.WeekText>
+
+            <s.MoveBtn
+                onClick={() => moveWeek(1)}
+            >
+                →
+            </s.MoveBtn>
+
+        </s.WeekNavigator>
+
       <WeeklySummary blocks={draftBlocks}/> {/* 편집 중에도 실시간 반영 */}
 
         {/* 요일 헤더 */}
@@ -85,7 +141,8 @@ const PlannerGrid:React.FC = () => {
           <s.TimeColumn>
             {HOURS.map((hour) => (
               <s.TimeCell key={hour}>
-                {String(hour).padStart(2, '0')}:00
+                {/* {String(hour).padStart(2, '0')}:00 */}
+                {hour}
               </s.TimeCell>
             ))}
           </s.TimeColumn>

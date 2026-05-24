@@ -5,7 +5,6 @@ import * as s from './StudyBlockItemStyle';
 
 interface StudyBlockProps {
     block: StudyBlock;
-
     title: string;
     color: string;
     top: number;
